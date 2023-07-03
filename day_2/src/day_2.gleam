@@ -49,31 +49,47 @@ fn part2_choice_point(rps: RPS) -> Int {
 fn part2_round_point(round: #(String, String)) -> Int {
   let planned_outcome = expected_outcome(round.1)
   case planned_outcome {
-    Lose -> case opponents_choice(round.0) {
-      Rock     -> part2_choice_point(Scissors)
-      Paper    -> part2_choice_point(Rock)
-      Scissors -> part2_choice_point(Paper)
-    }
-    Draw -> case opponents_choice(round.0) {
-      Rock     -> part2_choice_point(Rock) |> int.add(3)
-      Paper    -> part2_choice_point(Paper) |> int.add(3)
-      Scissors -> part2_choice_point(Scissors) |> int.add(3)
-    }
-    Win -> case opponents_choice(round.0) {
-      Rock     -> part2_choice_point(Paper) |> int.add(6)
-      Paper    -> part2_choice_point(Scissors) |> int.add(6)
-      Scissors -> part2_choice_point(Rock) |> int.add(6)
-    }
+    Lose ->
+      case opponents_choice(round.0) {
+        Rock -> part2_choice_point(Scissors)
+        Paper -> part2_choice_point(Rock)
+        Scissors -> part2_choice_point(Paper)
+      }
+    Draw ->
+      case opponents_choice(round.0) {
+        Rock ->
+          part2_choice_point(Rock)
+          |> int.add(3)
+        Paper ->
+          part2_choice_point(Paper)
+          |> int.add(3)
+        Scissors ->
+          part2_choice_point(Scissors)
+          |> int.add(3)
+      }
+    Win ->
+      case opponents_choice(round.0) {
+        Rock ->
+          part2_choice_point(Paper)
+          |> int.add(6)
+        Paper ->
+          part2_choice_point(Scissors)
+          |> int.add(6)
+        Scissors ->
+          part2_choice_point(Rock)
+          |> int.add(6)
+      }
   }
 }
 
 pub fn main() {
   let assert Ok(input) = simplifile.read("./asset/input.txt")
 
-  let tuples = input
-  |> string.split("\n")
-  |> list.map(line_to_tuple)
-  |> option.values()
+  let tuples =
+    input
+    |> string.split("\n")
+    |> list.map(line_to_tuple)
+    |> option.values()
 
   // Part one
   tuples
